@@ -1,124 +1,71 @@
-Let's solve each question step by step as shown in the attached exercise. These questions involve calculating the area and perimeter of trapezoids. 
+Here's a Python function that efficiently calculates the Fibonacci sequence using **memoization** with **type hinting** for better code clarity. I'll explain each part through comments to make it easy to understand.
 
-The formulae used here are:
+```python
+from typing import Dict
 
-1. **Area of a trapezoid** = \(\frac{1}{2} \times (\text{Base}_1 + \text{Base}_2) \times \text{Height}\)
-2. **Perimeter of a trapezoid** = Sum of all sides
+# Define a memoization function that will store computed Fibonacci values
+def memoize(fn):
+    # Cache will store previously computed Fibonacci values
+    cache: Dict[int, int] = {}
 
-Let's go through each part.
+    # This inner function will handle the memoization logic
+    def memoized_fn(n: int) -> int:
+        # Check if the result is already in the cache
+        if n in cache:
+            return cache[n]
+        
+        # If not in cache, compute the result and store it
+        result = fn(n)
+        cache[n] = result
+        return result
+    
+    # Return the memoized version of the function
+    return memoized_fn
 
----
+# Define the recursive Fibonacci function with type hinting
+def fibonacci(n: int) -> int:
+    """
+    Calculates the nth Fibonacci number.
+    
+    :param n: The position in the Fibonacci sequence to calculate.
+    :return: The Fibonacci number at position n.
+    """
+    # Base cases: Fib(0) = 0, Fib(1) = 1
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
 
-### Part (a)
+    # Recursive case: Fib(n) = Fib(n-1) + Fib(n-2)
+    return fibonacci(n - 1) + fibonacci(n - 2)
 
-**Given:**
-- Top base (\(B_1\)) = 12 cm
-- Bottom base (\(B_2\)) = 3 cm
-- Height = 5 cm
-- Side lengths are 5 cm each
+# Apply memoization to optimize the Fibonacci function
+memoized_fibonacci = memoize(fibonacci)
 
-**Calculations:**
+# Example usage
+if __name__ == "__main__":
+    # Calculate the 10th Fibonacci number
+    print(memoized_fibonacci(10))  # Output: 55
+```
 
-1. **Area**:
-   \[
-   \text{Area} = \frac{1}{2} \times (B_1 + B_2) \times \text{Height}
-   \]
-   \[
-   = \frac{1}{2} \times (12 + 3) \times 5 = \frac{1}{2} \times 15 \times 5 = 37.5 \, \text{cm}^2
-   \]
+### Explanation:
 
-2. **Perimeter**:
-   \[
-   \text{Perimeter} = B_1 + B_2 + \text{Side}_1 + \text{Side}_2
-   \]
-   \[
-   = 12 + 3 + 5 + 5 = 25 \, \text{cm}
-   \]
+1. **Type Hinting**:
+   - The type hint `Dict[int, int]` in the `memoize` function specifies that the cache will store keys and values as integers. Type hints improve code readability and allow static type checking tools to catch potential issues early.
+   - The `fibonacci` function is type hinted to return an `int` and accept an `int` argument (`n: int -> int`), which describes that the input `n` is an integer, and the function will return an integer.
 
----
+2. **Memoization**:
+   - The `memoize` function wraps another function and adds caching behavior. 
+   - It creates a `cache` dictionary to store previously computed Fibonacci values. Before computing `Fib(n)`, it checks if `n` exists in the cache. If found, it returns the cached value, otherwise computes it, stores it in the cache, and returns the result.
 
-### Part (b)
+3. **Fibonacci Calculation**:
+   - The `fibonacci` function uses the recursive definition of the Fibonacci sequence. It checks the base cases (`Fib(0) = 0` and `Fib(1) = 1`) and then recursively computes higher values.
+   - With memoization, the repeated recursive calls are optimized as the results of earlier calls are cached.
 
-**Given:**
-- Top base (\(B_1\)) = 4 cm
-- Bottom base (\(B_2\)) = 10 cm
-- Height = 7.2 cm
-- Side lengths are 6 cm each
+4. **Efficiency**:
+   - This implementation avoids recomputing the same Fibonacci numbers multiple times, reducing the time complexity from exponential `O(2^n)` (without memoization) to linear `O(n)`.
 
-**Calculations:**
+5. **Example Usage**:
+   - The `memoized_fibonacci(10)` call calculates the 10th Fibonacci number efficiently and prints `55`.
 
-1. **Area**:
-   \[
-   \text{Area} = \frac{1}{2} \times (B_1 + B_2) \times \text{Height}
-   \]
-   \[
-   = \frac{1}{2} \times (4 + 10) \times 7.2 = \frac{1}{2} \times 14 \times 7.2 = 50.4 \, \text{cm}^2
-   \]
-
-2. **Perimeter**:
-   \[
-   \text{Perimeter} = B_1 + B_2 + \text{Side}_1 + \text{Side}_2
-   \]
-   \[
-   = 4 + 10 + 6 + 6 = 26 \, \text{cm}
-   \]
-
----
-
-### Part (c)
-
-**Given:**
-- Top base (\(B_1\)) = 20 cm
-- Bottom base (\(B_2\)) = 8 cm
-- Height = 7 cm
-- Side lengths are 6 cm and 5 cm
-
-**Calculations:**
-
-1. **Area**:
-   \[
-   \text{Area} = \frac{1}{2} \times (B_1 + B_2) \times \text{Height}
-   \]
-   \[
-   = \frac{1}{2} \times (20 + 8) \times 7 = \frac{1}{2} \times 28 \times 7 = 98 \, \text{cm}^2
-   \]
-
-2. **Perimeter**:
-   \[
-   \text{Perimeter} = B_1 + B_2 + \text{Side}_1 + \text{Side}_2
-   \]
-   \[
-   = 20 + 8 + 6 + 5 = 39 \, \text{cm}
-   \]
-
----
-
-### Part (d)
-
-**Given:**
-- Top base (\(B_1\)) = 5 cm
-- Bottom base (\(B_2\)) = 8 cm
-- Height = 3 cm
-- Side lengths are 3 cm and 4 cm
-
-**Calculations:**
-
-1. **Area**:
-   \[
-   \text{Area} = \frac{1}{2} \times (B_1 + B_2) \times \text{Height}
-   \]
-   \[
-   = \frac{1}{2} \times (5 + 8) \times 3 = \frac{1}{2} \times 13 \times 3 = 19.5 \, \text{cm}^2
-   \]
-
-2. **Perimeter**:
-   \[
-   \text{Perimeter} = B_1 + B_2 + \text{Side}_1 + \text{Side}_2
-   \]
-   \[
-   = 5 + 8 + 3 + 4 = 20 \, \text{cm}
-   \]
-
----
-
-These are the solutions for each part. Let me know if you need further explanation!
+This function is highly efficient for calculating Fibonacci numbers, even for large `n`, thanks to memoization.
